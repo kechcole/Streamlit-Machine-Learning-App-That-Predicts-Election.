@@ -6,14 +6,34 @@ import streamlit as st
 def load_data():
     # Open the pickle file in read-binary mode and load the data
     with open('Model/data.pkl', 'rb') as f:
-        loaded_data = pickle.load(f)
+        data = pickle.load(f)
 
-    print(loaded_data.columns)
+    return data
+
 
 
 # A side bar
 def add_side_bar():
     st.sidebar.header('County Parameters.')
+
+    data = load_data()
+
+    # Dictionary of key(column name) and value(slider value) , used to plot
+    input_dict = {}
+
+    for col in data.columns:
+        # Format the label for readability
+        label = col.replace('_', ' ').title()
+
+        # Add slider values 
+        input_dict[col] = st.sidebar.slider(
+            label,
+            min_value=float(data[col].min()),
+            max_value=float(data[col].max()),
+            value=float(data[col].mean())        # Default value 
+        )
+
+    return input_dict
 
 
 def main():
@@ -30,8 +50,8 @@ def main():
                 Voter turnout, Population demographics, Age distribution, Socioeconomic factors. \
                  By combining these variables, the model can provide a statistical estimate of how different factors influence electoral outcomes at the county level, offering valuable insights into voting patterns and potential election results.")
 
-    add_side_bar()
-    load_data()
+    st.write(add_side_bar())
+    
 
 
 
