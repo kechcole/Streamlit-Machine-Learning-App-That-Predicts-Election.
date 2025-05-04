@@ -73,6 +73,9 @@ def main():
     # Save the scaler
     with open('Model/scaler.pkl', 'wb') as f:
         pickle.dump(scaler, f)
+    # Open a file in write-binary mode and save the data
+    with open('Model/data.pkl', 'wb') as f:
+        pickle.dump(data, f)
 
 
 
